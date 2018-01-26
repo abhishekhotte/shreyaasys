@@ -1,0 +1,10 @@
+-----------------------------------
+Date Time: 06-Jan-2018 12:41:37 AM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59
+-----------------------------------
+Date Time: 06-Jan-2018 12:42:35 AM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59

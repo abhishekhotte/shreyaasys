@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>shreyaaSys Computers</title>
+    
+    @Scripts.Render("~/bundles/scripts")
+    @Styles.Render("~/bundles/css")
+
+    <!-- JS FILES -->
+    @*<link rel="icon" type="image/gif" href="~/shreyaasys_logo.ico" />
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/slick.min.js"></script>
+    <script src="~/Scripts/jquery.flexslider-min.js"></script>
+    <script src="~/Scripts/jquery.fancybox.pack.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    <script src="~/Scripts/adminlte.js"></script>
+    <script src="~/Scripts/custom.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/flexslider.css">
+    <link rel="stylesheet" href="~/Content/jquery.fancybox.css">
+    <link rel="stylesheet" href="~/Content/main.css">
+    <link rel="stylesheet" href="~/Content/responsive.css">
+    <link rel="stylesheet" href="~/Content/font-icon.css">
+    <link rel="stylesheet" href="~/Content/animate.min.css">
+    <link rel="stylesheet" href="~/Content/iconfont/style.css"  />
+    <link rel="stylesheet" href="~/content/custom.css">
+    <link rel="stylesheet" href="~/Content/AdminLTE.css">
+    <link href="~/Content/slick.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />*@
+    <link href="~/Content/font-icon.css" rel="stylesheet">
+    <link href="~/Content/iconfont/style.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
+    <script>
+        $(document).ready(function () {
+            getAllServicesMenu();
+
+            $(document).ajaxError(function (e, xhr, settings) {
+                var pathname = window.location.pathname;
+                if (xhr.status == 253) {
+                    showWarningStatus("Your Session has Expired");
+                    setTimeout(function () {
+                        location = "../account/login";
+                    }, 2000);
+                }
+            });
+
+            $("#liOurClients").click(function () {
+                $("#acli").css("color", "white");
+                len = $("#our-clients").length;
+                if (len == 0) {
+                    window.location.href = '/home#our-clients';
+                }
+                $('html, body').animate({
+                    scrollTop: $("#our-clients").offset().top - 120
+                }, 550);
+            });
+        });
+
+        function getAllServicesMenu() {
+            showStatus("Please wait...")
+            $.ajax({
+                contentType: "json",
+                type: "post",
+                url: '@Url.Action("GetAllServices","Home")'
+            }).success(function (data) {
+                if (data.result == "success") {
+                    var temp = "", count = 0, tempServiceMenu = "";
+                    for (var i = 0; i < data.list.length; i++) {
+                        tempServiceMenu += "<li id='liMenu"+data.list[i].Id+"'><a href='/home/services/" + data.list[i].Id + "'>" + data.list[i].Name + "</a></li>";
+                    }
+                    $("#liServicesSubMenu").html(tempServiceMenu);
+                    $("#liServicesSubMenu li").hover(function () {
+                        $("#liServices").addClass("active");
+                    }, function () {
+                        $("#liServices").removeClass("active");
+                    })
+                    hideStatus()
+                }
+                else
+                    showWarningStatus("Unable to get services");
+            }).error(function () {
+
+            });
+        }
+    </script>
+</head>
+<body>
+    <header id="header">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="authenticate-header">
+                Welcome&nbsp;<i> @User.Identity.Name</i>
+                &nbsp;&nbsp;&nbsp;&nbsp; <a id="lnkLogout" href="@Url.Action("logout", "account")" style="color:#19b6dd !important;">Logout</a>
+            </div>
+        }
+        <div class="header-content clearfix">
+            <nav>
+                <div id="logo">
+                    <img src="~/images/logo.png" />
+                </div>
+                <a class="logo" id="lnkHome" href="~/home">shreyaaSys Computers</a>
+                <label for="drop" class="toggle"></label>
+                <input type="checkbox" id="drop" />
+                <ul class="menu" id="ulMenu">
+                    <li id="liHome"><a href="~/home">Home</a></li>
+                    <li id="liServices">
+                        <!-- First Tier Drop Down -->
+                        <label for="drop-1" class="toggle">Our Services +</label>
+                        <a href="~/home/services">Our Services</a>
+                        <input type="checkbox" id="drop-1" />
+                        <ul id="liServicesSubMenu">
+                           
+                        </ul>
+                    </li>
+                    
+                    <li id="liAboutUs"><a href="~/home/about">About Us</a></li>
+                    @*<li id="liOurClients"><a id="acli" href="javascript:void()">Our Clients</a></li>*@
+                    <li id="liContactUs"><a href="~/home/contact">Contact Us</a></li>
+                </ul>
+            </nav>
+            <a href="#" class="nav-toggle">Menu<span></span></a>
+        </div>
+    </header>
+    <!-- header section -->
+    <section class="banner" role="banner">
+        <!-- banner text -->
+        <div class="container">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="banner-text text-center">
+                    <h1>Your Local Computer Specialist Servicing Center</h1>
+                    <h3>Professional Repair Service Centre for Laptop, Computers, Printers, CCTV devices</h3>
+                </div>
+                <!-- banner text -->
+            </div>
+        </div>
+    </section>
+    <!-- header section -->
+
+
+    <div class="container body-content" >
+        @RenderBody()
+        <hr />
+    </div>
+    
+    <!-- Footer section -->
+    <div class="page-footer">
+        
+        <div class="row footer-columns">
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="contact-info">
+                    <i class="icon icon-placeholder-for-map"></i>
+                    Kurihinasetty Complex <br />
+                    Bellary Road <br />
+                    Rayadurgam  515 865 <br />
+                    Anantapur Dist <br />
+                    Andhra Pradesh 
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="contact-info">
+                    <i class="icon icon-clock"></i>
+                    <table>
+                        <tr>
+                            <td>Mon-Sat:&nbsp;</td>
+                            <td> 9:00 AM - 8:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Sun: &nbsp;</td>
+                            <td>9:00 AM - 1:30 PM</td>
+                        </tr>
+                    </table>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="contact-info">
+                    <i class="icon icon-phone-receiver"></i>
+                    +(91) 8495-253776
+                    <br />+(91) 94412 66776
+                    <br />
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-6 col-xs-12">
+                <div class="contact-info">
+                    <i class="fa fa-envelope mail-icon"></i>
+                    shreyaasys.rdg@gmail.com
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="social-links">
+            <ul>
+                <li>
+                    <a class="icon icon-facebook" href="#"></a>
+                </li>
+                <li>
+                    <a class="icon icon-twitter" href="#"></a>
+                </li>
+                <li>
+                    <a class="icon icon-google-plus" href="#"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="copyright">
+            &copy; @DateTime.Now.Year - sheryaaSys Computers. All Rights Reserved.
+            <br />
+            Developed by Abhishek Hotte
+        </div>
+
+
+    </div>
+    <!-- Footer section -->
+
+    <!--/Status display-->
+    <div id="statusMsg" align="center" style="display: none;">
+        <div class="">
+            <div class="pull-left"><i class=""></i></div>
+            <div class="msg">
+                <i class="fa fa-spinner fa-spin" id="iconType"></i>&nbsp;
+                <span id="statusText" align="center">
+                </span>
+            </div>
+            <div class="pull-left">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<script>
+
+    $(document).ready(function () {
+        $('#iframeGMap').on('load', function () {
+            $('html, body').animate({
+                scrollTop: $("#contact-us").offset().top - 60
+            }, 500);
+        });
+    })
+</script>
+<div class="padding-50" id="contact-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-lg-3">
+                <div class="contact-box box box-primary ">
+                    <div class="contact-box-row">
+                        <i class="icon-phone-receiver"></i>
+                        <div class="contact-box-row-title"><b>Contact Phone</b></div>
+                        +(91) 8495-253776
+                        <br />+(91) 94412 66776
+                        <br />
+                    </div>
+                    <div class="contact-box-row">
+                        <i class="icon-placeholder-for-map"></i>
+                        <div class="contact-box-row-title"><b>Office Address</b></div>
+                        Kurihinasetty Complex <br />
+                        Bellary Road <br />
+                        Rayadurgam  515 865 <br />
+                        Anantapur Dist <br />
+                        Andhra Pradesh
+                    </div>
+                    <div class="contact-box-row">
+                        <i class="icon-clock"></i>
+                        <div class="contact-box-row-title"><b>Office hours</b></div>
+                        <table>
+                            <tr>
+                                <td>Mon-Sat:&nbsp;</td>
+                                <td> 9:00 AM - 8:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Sun: &nbsp;</td>
+                                <td>9:00 AM - 1:30 PM</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="divider-lg visible-xs"></div>
+            <div class="col-md-8 col-lg-9" id="divContactSubmit">
+                @Html.Partial("_ContactUsPartialPage")
+            </div>
+        </div>
+
+        <div class="contact-box box box-primary" style="padding: 0px;">
+            <div id="google_map" style="height:500px;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1929.5736125513463!2d76.849512!3d14.704265!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x9873c8a3d6cf8b7!2sshreyaaSys+Computers!5e0!3m2!1sen!2sin!4v1506451483305" id="iframeGMap" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="modal fade" id="divModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="fa fa-close"></span>
+                </button>
+                <h4 class="modal-title" id="divModalHeader">Thank You</h4>
+            </div>
+            <div class="modal-body" id="divModalBody">
+                <span>
+                    We have received your enquiry and will contact you within 1 business day.
+                    <br />You can also reach us by <b>+(91) 8495-253776</b>
+                </span>
+                <br />
+                <br />
+                <span>Regards,<br />shreyaaSys Computers</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm btn-xs" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

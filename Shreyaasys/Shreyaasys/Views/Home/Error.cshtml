@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "error";
+}
+<script>
+    $(document).ready(function () {
+        $('html, body').animate({
+            scrollTop: $("#error").offset().top - 120
+        }, 550);
+    })
+</script>
+
+<!-- gallery section -->
+<div class="padding-50">
+    <div class="box box-primary" id="error">
+        <div class="box-header">
+            <div class="pull-left">
+                <h2 class="box-title"><i class="fa fa-times-circle-o"></i>&nbsp; Error</h2>
+            </div>
+        </div>
+        <div class="box-body with-border">
+            <div class="tz-gallery">
+                <div class="row">
+                    We are sorry, an error occured while proccessing your request. 
+                    <br />Please contact your administrator.
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <a href="~/home" class="btn btn-info btn-sm btn-xs">Home</a>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- unauthorizedaccess section -->
+</div>

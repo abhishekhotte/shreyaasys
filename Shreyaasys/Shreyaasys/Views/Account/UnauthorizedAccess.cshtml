@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "UnauthorizedAccess";
+}
+<script>
+    $(document).ready(function () {
+        $('html, body').animate({
+            scrollTop: $("#unauthorizedaccess").offset().top - 60
+        }, 550);
+    })
+</script>
+
+<!-- gallery section -->
+<div class="padding-50">
+    <div class="box box-primary" id="unauthorizedaccess">
+        <div class="box-header">
+            <div class="pull-left">
+                <h2 class="box-title"><i class="fa fa-warning"></i>&nbsp; Unauthorized Access</h2>
+            </div>
+        </div>
+        <div class="box-body with-border">
+            <div class="tz-gallery">
+                <div class="row">
+                   We are sorry, we noticed that you are not an Admin of shreyaaSys Computers, only Admin has permission to login to the application.
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <a href="~/home" class="btn btn-info btn-sm btn-xs">Home</a>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- unauthorizedaccess section -->
+</div>

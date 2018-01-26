@@ -1,0 +1,307 @@
+﻿<link href="~/Content/gallery-grid.css" rel="stylesheet" />
+<link href="~/Content/baguetteBox.min.css" rel="stylesheet" />
+<script src="~/Scripts/baguetteBox.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('html, body').animate({
+            scrollTop: $("#about-us").offset().top - 60
+        }, 500);
+
+        $("#ulMenu li").removeClass("active");
+        $("#liAboutUs").addClass("active");
+
+        getGalleryPhotos();
+        $("#fileUpload").change(function () {
+            var file = this.files;
+            var notImage = false;
+            for (var i = 0; i < this.files.length; i++) {
+                var fileType = file[i]["type"];
+                var ValidImageTypes = ["image/jpeg", "image/png"];
+                if ($.inArray(fileType, ValidImageTypes) < 0) {
+                    notImage = true;
+                    showWarningStatus("Please select JPEG/JPG and PNG images only");
+                    $("#fileUpload").val("");
+                    return;
+                }
+            }
+        })
+
+        $("#btnFileUpload").click(function () {
+            var fileUpload = $("#fileUpload").get(0);
+            var files = fileUpload.files;
+            if (files.length > 0) {
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+                showStatus("Please wait...");
+                $.ajax({
+                    url: '@Url.Action("UploadGallery","Home")',
+                    type: 'POST',
+                    data: fileData,
+                    success: function (data) {
+                        if (data.result == "success") {
+                            showSuccessStatus("Image uploaded successfully");
+                            $("#fileUpload").val("");
+                            setTimeout(function () {
+                                getGalleryPhotos();
+                            }, 2000)
+                        }
+                        else {
+                            showWarningStatus("Unable to upload gallery photo(s)");
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            else {
+                $("#fileUpload").focus();
+                showWarningStatus("Please select images");
+            }
+            
+        });
+    });
+
+    function getGalleryPhotos() {
+        showStatus("Please wait...");
+        $.ajax({
+            url: '@Url.Action("GetGalleryPhotos", "Home")',
+            type: 'POST',
+            success: function (data) {
+                if (data.result == "success") {
+                    $("#divGallery").html(data.images);
+                    baguetteBox.run('.tz-gallery');
+                }
+                else {
+                    showWarningStatus("Unable to load gallery photos");
+                }
+                hideStatus();
+            },
+        });
+    }
+
+</script>
+<div class="padding-50" id="about-us">
+    @{
+        ViewBag.Title = "About";
+    }
+    <!-- intro section -->
+    <div id="introsection" class="box box-primary  animation animated fadeInUp">
+        <div class="box-header">
+            <h2 class="box-title">About Us</h2>
+        </div>
+        <p><span style="color:#000000">shreyaa</span><span style="color:#cc6600">S</span><span style="color:#000000">ys Computers</span> is a computer related service based firm, established in 2003 to provide better service to the individual customers gradually expand their service to small scale firms. Now we extensively concentrated on Annual Maintenance Service Contract to Banks, Offices & Industries etc.</p>
+        <p>
+            We enter into the Computer Educational Services. We training service to office staff and students we develop them in all software competences and improve their employability.
+        </p>
+        <h3>Our main activities</h3>
+        <ul>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                Computer Service to the Desktop and laptop Computers for individual customers
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                Networking for small Business firms for their requirements like LAN, WAN & Internet Sharing.
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                AMCs (Annual Maintenance Service Contract) to Industries, Offices & Small Business Firms
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                Printer Services like Dot Matrix, Deskjet,  Laser & Barcode Printers.
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                UPS Service like small 600VA, Online UPS & Offline UPS for Large Offices
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                Desktop Computers Assembling & Software Maintenance
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                Computer Educational Service for office staff and students.
+            </li>
+            <li class="li-service">
+                <span class="fa fa-arrow-right"></span>
+                Sales of Computer, Printer, UPS Accessories & Related Materials.
+            </li>
+            <li class="li-service"><a href="~/home/services">View All Services</a></li>
+        </ul>
+    </div>
+    <!-- intro section -->
+   
+     <!-- Testimonials section -->
+    <div id="business" class="box box-primary  animation animated fadeInUp">
+        <div class="box-header">
+            <h2 class="box-title">Our Business</h2>
+        </div>
+        <p class="info text-center">We can Solve your Hardware and Software Problems</p>
+        <div class="row text-icon-carousel slick-initialized slick-slider" id="counterBlock">
+            <div aria-live="polite" class="slick-list draggable" tabindex="0">
+                <div class="slick-track" style="opacity: 1; width: 100%; transform: translate3d(0px, 0px, 0px);">
+                    <div class="col-sm-6 col-md-3 slick-slide slick-active" data-slick-index="2" aria-hidden="false">
+                        <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0s" style="animation-delay: 0s;">
+                            <div class="icon-wrapper">
+                                <span><i class="icon fa fa-briefcase "></i><span class="icon-hover"></span></span>
+                            </div>
+                            <h3 class="number about-highlight"><span data-to="10" data-speed="1000">2005</span></h3>
+                            <p class="text-center">
+                                @{
+                                    var curYear = DateTime.Now.Year;
+                                    var exp = curYear - 2005;
+                                }
+                                Over @exp + Years in Business
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 slick-slide slick-active" data-slick-index="0" aria-hidden="false">
+                        <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0.5s" style="animation-delay: 0.5s;">
+                            <div class="icon-wrapper">
+                                <span><i class="icon icon-repair"></i><span class="icon-hover"></span></span>
+                            </div>
+                            <h3 class="number about-highlight"><span data-to="8000" data-speed="1000">1000</span>+</h3>
+                            <p class="text-center">
+                                Computer/Laptop Repaired
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 slick-slide slick-active" data-slick-index="3" aria-hidden="false">
+                        <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0.5s" style="animation-delay: 0.5s;">
+                            <div class="icon-wrapper">
+                                <span><i class="icon icon-computer-with-monitor"></i><span class="icon-hover"></span></span>
+                            </div>
+                            <h3 class="number about-highlight"><span data-to="25000" data-speed="1000">250</span>+</h3>
+                            <p class="text-center">
+                                Computer/Laptop Sales
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 slick-slide slick-active" data-slick-index="1" aria-hidden="false">
+                        <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0s" style="animation-delay: 0s;">
+                            <div class="icon-wrapper">
+                                <span><i class="icon fa fa-video-camera "></i><span class="icon-hover"></span></span>
+                            </div>
+                            <h3 class="number about-highlight"><span data-to="5" data-speed="1000">1500+</span></h3>
+                            <p class="text-center">
+                                Total CCTV devices setup
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonials section -->
+    
+    <!-- our team section -->
+    <div id="team" class="box box-primary ">
+        <div class="box-header">
+            <h2 class="box-title">Meet Our Team</h2>
+        </div>
+        <p class="info text-center">We are experts in repair and upgrading of Computers, Laptops, CCTV setup</p>
+        <div class="row person-carousel slick-initialized slick-slider">
+            <div aria-live="polite" class="slick-list draggable" tabindex="0">
+                <div class="slick-track" style="opacity: 1; width: 100%; transform: translate3d(0px, 0px, 0px);">
+                    <div class="col-sm-6 col-md-4 slick-slide slick-active" data-slick-index="0" aria-hidden="false">
+                        <div class="person animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0.5s" style="animation-delay: 0.5s;">
+                            <div class="image">
+                                <img src="https://scontent.fmaa1-1.fna.fbcdn.net/v/t1.0-9/14590252_1117352555014441_8450767883481245783_n.jpg?oh=be1248150b83e011b05673a6c6ce5bc9&oe=5A3EDD7D" alt="" class="img-responsive">
+                                <div class="hover"></div>
+                            </div>
+                            <h4 class="name">
+                                Bolade Sreenivas
+                            </h4>
+                            <h6 class="position">Owner, Computer/Laptop/Printer repair specialist </h6>
+                            <div class="link">
+                                <a class="icon icon-facebook" href="https://www.facebook.com/bolade.sreenivas"></a>
+                                <a class="icon icon-twitter" href="#"></a>
+                                <a class="icon icon-google-plus" href="#"></a>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-md-4 slick-slide slick-active" data-slick-index="1" aria-hidden="false">
+                        <div class="person animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                            <div class="image">
+                                <img src="https://scontent.fmaa1-1.fna.fbcdn.net/v/t1.0-9/20294429_1363195453799227_3549288121039663105_n.jpg?oh=b6744fb124cb4a0854bacf4d352060ab&oe=5A4E1DD3" alt="" class="img-responsive">
+                                <div class="hover"></div>
+                            </div>
+                            <h4 class="name">Jagadeesh Varma</h4>
+                            <h6 class="position">Computer/Printer repairs, CCTV device setup</h6>
+                            <div class="link">
+                                <a class="icon icon-facebook" href="https://www.facebook.com/jagadeesh.varma.5"></a>
+                                <a class="icon icon-twitter" href="#"></a>
+                                <a class="icon icon-google-plus" href="#"></a>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-md-4 slick-slide slick-active" data-slick-index="2" aria-hidden="false">
+                        <div class="person animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                            <div class="image">
+                                <img src="https://scontent.fmaa1-1.fna.fbcdn.net/v/t1.0-9/15940424_1330401140353391_3624960164082602531_n.jpg?oh=f199d6ce549531aabf70c999daec39b8&oe=5A41F985" alt="" class="img-responsive">
+                                <div class="hover"></div>
+                            </div>
+                            <h4 class="name">Shiva Kumar</h4>
+                            <h6 class="position">Computer repairs, IT support</h6>
+                            <div class="link">
+                                <a class="icon icon-facebook" href="https://www.facebook.com/shivakumakmr"></a>
+                                <a class="icon icon-twitter" href="#"></a>
+                                <a class="icon icon-google-plus" href="#"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- our team section -->
+    
+    <!--our clients section-->
+    @Html.Partial("_ClientsPartialPage")
+    <!--our clients section-->
+  
+      <!-- gallery section -->
+    <div class="box box-primary " id="gallery">
+        <div class="box-header">
+            <div class="pull-left">
+                <h2 class="box-title">Our Office</h2>
+            </div>
+            @if(User.Identity.IsAuthenticated)
+            {
+                <div class="pull-right">
+                    <form id="formUpload" method="post"></form>
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="file" name="fileUpload" value="" id="fileUpload" class="form-control" multiple accept="image/*" />
+                            </td>
+                            <td>
+                                &nbsp;
+
+                                <button id="btnFileUpload" type="submit" class="btn btn-info btn-xs" title="Upload File">
+                                    Upload
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <div class="box-body with-border">
+            <div class="tz-gallery">
+                <div class="row" id="divGallery">
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- gallery section -->
+
+</div>
+

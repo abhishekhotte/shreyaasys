@@ -1,0 +1,276 @@
+﻿@model Shreyaasys.Models.Services
+@{
+    ViewBag.Title = "Services";
+}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.2/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        $('html, body').animate({
+            scrollTop: $("#our-services").offset().top - 60
+        }, 500);
+
+        getAllServices();
+        $("#ulMenu li").removeClass("active");
+        $("#liServices").addClass("active");
+
+
+        $("#btnAdd").click(function () {
+            clearServiceAddUpdateDetails();
+            $("#divServiceId").attr("data-view-service-id", "0");
+            $("#divModalHeader").text("Add Service");
+            $("#divModal").modal("show");
+        });
+
+        $("#btnEdit").click(function () {
+            clearServiceAddUpdateDetails();
+            CKEDITOR.instances['editor1'].setData($("#serviceContent").html());
+            $("#txtServiceName").val($("#serviceHeader").text());
+            $("#divModalHeader").text("Edit Service");
+            $("#divModal").modal("show");
+        });
+
+        $("#btnSaveService").click(function () {
+            serviceName = $("#txtServiceName").val();
+            content = CKEDITOR.instances['editor1'].getData();
+            checkIfFieldEmpty();
+            if (serviceName == "")
+                showWarningStatus("Please enter Service Name");
+            else if (content == "")
+                showWarningStatus("Please enter Service details")
+            else {
+                id = $("#divServiceId").attr("data-view-service-id");
+                showStatus("Please wait...");
+                $.ajax({
+                    data: {
+                        id: id,
+                        name: serviceName,
+                        htmlContent: content
+                    },
+                    dataType: "json",
+                    type: "post",
+                    url: '@Url.Action("AddUpdateService","Home")'
+                }).success(function (data) {
+                    if (data.result == "success") {
+                        $("#divModal").modal("hide");
+                        if (id == 0 || id==undefined) {
+                            showSuccessStatus("Service added successfully");
+                            window.location.href = '/home/services/' + data.obj.Id;
+                        }
+                        else {
+                            $("#serviceHeader").text(data.obj.Name);
+                            $("#serviceContent").html(data.obj.HtmlContent);
+                            showSuccessStatus("Service updated successfully");
+                        }
+                    }
+                    else
+                        showWarningStatus("Unable to update service");
+                }).error(function () {
+
+                });
+            }
+        });
+    })
+
+    function clearServiceAddUpdateDetails() {
+        if (CKEDITOR.instances['editor1'] != undefined)
+            CKEDITOR.instances['editor1'].destroy();
+        CKEDITOR.editorConfig = function (config) {
+            config.language = 'en';
+            config.height = 300;
+        };
+        CKEDITOR.replace('editor1');
+        CKEDITOR.instances['editor1'].setData("");
+        $("#txtServiceName").removeClass("txt-error").val("");
+    }
+
+    function getAllServices() {
+        showStatus("Please wait...");
+        $.ajax({
+            contentType: "json",
+            type: "post",
+            url: '@Url.Action("GetAllServices","Home")'
+        }).success(function (data) {
+            if (data.result == "success") {
+                var temp = "", count = 0;
+                for (var i = 0; i < data.list.length; i++) {
+                    temp += "<li id='liService" + data.list[i].Id + "'><a  href='/home/services/" + data.list[i].Id + "' data-view-service-id='" + data.list[i].Id + "'><span class='fa fa-angle-right' style='padding-right:5px;'></span>" + data.list[i].Name + "</a></li>";
+                }
+                $("#liServiceList").html(temp);
+                var activeId = $("#divServiceId").attr("data-view-service-id");
+                $("#liServiceList li").removeClass("active");
+                $("#liService" + activeId).addClass("active");
+                $("#liMenu" + activeId).addClass("active");
+            }
+            else
+                showWarningStatus("Unable to get services");
+            hideStatus()
+        }).error(function () {
+
+        });
+    }
+
+</script>
+<style>
+    @@media (min-width: 1050px) {
+        .modal-lg {
+            width: 1000px;
+        }
+    }
+
+    #liServiceList .active {
+        background-color: white;
+    }
+
+    .modal-body {
+        height: 420px;
+        overflow-y: scroll;
+    }
+
+    .li-icons {
+        position: relative;
+        top: 30px;
+        left: -12px;
+    }
+</style>
+<div class="padding-50" id="our-services">
+    <div class="row">
+        <div class="col-md-4 col-lg-3">
+            <div class="box box-primary contact-box">
+                <div class="box-header">
+                    <h3 class="box-title">Our Services</h3>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <div class="pull-right box-tools">
+                        <button id="btnAdd" type="button" class="btn btn-info btn-xs" title="Add New Service" data-original-title="Add">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    }
+                </div>
+                <div class="box-body with-border">
+                    <ul class="service-list-1" id="liServiceList">
+                       
+                    </ul>
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+            <div class="contact-box box box-primary ">
+                <div class="contact-box-row">
+                    <i class="icon-phone-receiver"></i>
+                    <div class="contact-box-row-title"><b>Contact Phone</b></div>
+                    +(91) 8495-252483
+                    <br />+(91) 94412 66776
+                    <br />
+                </div>
+                <div class="contact-box-row">
+                    <i class="icon-placeholder-for-map"></i>
+                    <div class="contact-box-row-title"><b>Office Address</b></div>
+                    Kurihinasetty Complex <br />
+                    Bellary Road <br />
+                    Rayadurgam  515 865 <br />
+                    Anantapur Dist, <br />
+                    Andhra Pradesh
+                </div>
+                <div class="contact-box-row">
+                    <i class="icon-clock"></i>
+                    <div class="contact-box-row-title"><b>Office hours</b></div>
+                    <table>
+                        <tr>
+                            <td>Mon-Sat:&nbsp;</td>
+                            <td> 9:00 AM - 8:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Sun: &nbsp;</td>
+                            <td>9:00 AM - 1:30 PM</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="divider-lg visible-xs"></div>
+        <div class="col-md-8 col-lg-9">
+            @if (Model != null)
+            {
+                <div class="box box-primary contact-box" id="divServiceId" data-view-service-id="@Model.Id">
+                    <div class="box-header">
+                        <h2 class="box-title" id="serviceHeader">@Model.Name</h2>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="pull-right box-tools">
+                                <button id="btnEdit" type="button" class="btn btn-info btn-xs" title="Edit" data-original-title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </div>
+                        }
+                    </div>
+                    <div class="box-body with-border" id="serviceContent">
+                        @Html.Raw(Model.HtmlContent)
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            }
+            else
+            {
+                <div class="box box-primary" id="pagenotfound">
+                    <div class="box-header">
+                        <div class="pull-left">
+                            <h2 class="box-title"><i class="fa fa-warning"></i>&nbsp; Service not found</h2>
+                        </div>
+                    </div>
+                    <div class="box-body with-border">
+                        <div class="tz-gallery">
+                            <div class="row">
+                                We are sorry, we couldn't find the service that you were looking for access.
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+    <div class="modal fade" id="divModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-close"></span>
+                    </button>
+                    <h4 class="modal-title" id="divModalHeader">Add/Edit</h4>
+                </div>
+                <div class="modal-body" id="divModalBody">
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">Service Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="" value="" class="form-control mandatory-field" id="txtServiceName" placeholder="Service Name" maxlength="50" />
+                        </div>
+                    </div>
+                    <br /><br />
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            Content
+                            <textarea name="editor1" id="editor1" rows="10" cols="60"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-xs pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info btn-xs" id="btnSaveService">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    }
+</div>

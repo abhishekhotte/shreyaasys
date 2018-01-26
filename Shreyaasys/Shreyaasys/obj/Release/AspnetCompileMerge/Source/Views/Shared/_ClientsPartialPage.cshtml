@@ -1,0 +1,140 @@
+﻿<script>
+    $(document).ready(function () {
+        getClients();
+        $("#btnAddClient").click(function () {
+            $("#txtClientName").removeClass("txt-error").val("");
+            $("#divModal").prop("data-client-id", "0");
+            $("#divModalHeader").text("Add Customer");
+            $("#divModal").modal("show");
+            setTimeout(function () {
+                $("#txtClientName").focus()
+            },500)
+        });
+
+        $("#btnSaveClient").click(function () {
+            clientName = $("#txtClientName").val();
+            clientName = clientName.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+            clientId = $("#divModal").prop("data-client-id");
+            data = {
+                id: clientId,
+                name:clientName
+            }
+            if (clientName != "") {
+                $("#divModal").modal("hide");
+                showStatus("Please wait...")
+
+                $.ajax({
+                    data: data,
+                    dataType: "json",
+                    type: "post",
+                    url: "@Url.Action("AddUpdateClients", "Home")",
+                    
+                    success: function (data) {
+                        if(data.result=="success")
+                            getClients();
+                        else
+                            showWarningStatus("Error while " + (clientId == 0 ? "adding" : "updating") + " Client details");
+                    }
+                }).error(function () {
+                    showWarningStatus("Error while " + (clientId == 0 ? "adding" : "updating") + " Client details");
+                });
+            }
+            else {
+                showWarningStatus("Please enter Client Name");
+                $("#txtClientName").focus();
+            }
+        });
+    });
+
+    function getClients() {
+        showStatus("Please wait...")
+        $.ajax({
+            contentType: "json",
+            type: "post",
+            url: '@Url.Action("GetAllClients", "Home")'
+        }).success(function (data) {
+            if (data.result == "success"){
+                $("#divClients").html(data.htmlData);
+
+                $(".data-client-edit").click(function () {
+                    var clientId = $(this).attr("data-id");
+                    var clientName = $(this).attr("data-client-name");
+                    $("#divModal").prop("data-client-id", clientId);
+                    $("#divModalHeader").text("Edit Customer");
+                    $("#txtClientName").removeClass("txt-error").val(clientName);
+                    $("#divModal").modal("show");
+                    setTimeout(function () {
+                        $("#txtClientName").focus()
+                    }, 500)
+                })
+            }
+            else
+                showWarningStatus("Error while fetching Client details");
+         
+            hideStatus()
+        }).error(function () {
+            showWarningStatus("Error while fetching Client details");
+        });
+    }
+
+</script>
+
+ <!--our cients section-->
+<div class="box box-primary " id="our-clients">
+    <div class="form-group ">
+        <div class="col-lg-12">
+            <div class="pull-left">
+                <h2 class="box-title">Our Customers</h2>
+            </div>
+            @if(User.Identity.IsAuthenticated)
+            {
+                <div class="pull-right">
+                    <button id="btnAddClient" type="submit" class="btn btn-info btn-sm btn-xs" title="Add New">
+                        Add
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="box-body with-border">
+        <div id="divClients" class="form-group">
+        </div>
+    </div>
+    <!-- /.box-body -->
+
+</div>
+<!-- our cients section -->
+
+
+@if(User.Identity.IsAuthenticated)
+{ 
+    <div class="modal fade" id="divModal" data-client-id="0">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-close"></span>
+                    </button>
+                    <h4 class="modal-title" id="divModalHeader">Add/Edit</h4>
+                </div>
+                <div class="modal-body" id="divModalBody">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="" value="" class="form-control mandatory-field" id="txtClientName" placeholder="Client Name" maxlength="60" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-sm btn-xs pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info btn-sm btn-xs" id="btnSaveClient">Save </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div> 
+}

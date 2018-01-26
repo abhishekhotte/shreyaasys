@@ -1,0 +1,226 @@
+﻿<script>
+    $(document).ready(function () {
+        getAllServices();
+        $("#ulMenu li").removeClass("active");
+        $("#liHome").addClass("active");
+    })
+
+    function getAllServices() {
+        showStatus("Please wait...")
+        $.ajax({
+            contentType: "json",
+            type: "post",
+            url: '@Url.Action("GetAllServices","Home")'
+        }).success(function (data) {
+            if (data.result == "success") {
+                var temp = "", count = 0;
+                for (var i = 0; i < data.list.length; i++) {
+                    temp += '<div class="col-sm-6 col-lg-5 col-lg-offset-1"><ul class="marker-list-sm animation animated slideInUp" data-animation="slideInUp" data-animation-delay="0s" style="animation-delay: 0s;"><li class="li-service-heading"><a href="/home/services/' + data.list[i].Id + '">' + data.list[i].Name + '</li></a></ul></div>';
+                }
+                $("#divServicesList").html(temp);
+            }
+            else
+            
+            hideStatus()
+        }).error(function () {
+
+        });
+    }
+</script>
+
+<div style="padding:40px;">
+    <!-- intro section -->
+    <section id="intro" class="section intro">
+        <div class="container" style="width:85%">
+            <div class="text-center col-md-12" >
+                <h3>We will repair your Computer/Laptop</h3>
+                <p>shreyaaSys Computers is a computer related service based firm, established in 2003 to provide better service to the individual customers gradually expand their service to small scale firms. Now we extensively concentrated on Annual Maintenance Service Contract to Banks, Offices & Industries etc.</p>
+            </div>
+        </div>
+    </section>
+    <!-- intro section -->
+  
+    <!-- our services section -->
+    <div class="box box-primary " id="services">
+        <div class="box-header">
+            <h2 class="box-title">Our Services</h2>
+        </div>
+        <div class="box-body with-border">
+            <div class="container-fluid" id="divServicesList">
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- services section -->
+
+      <!-- business section -->
+    <div class="box box-primary " id="business">
+        <div class="box-header">
+            <h2 class="box-title">Our Business</h2>
+        </div>
+        <div class="box-body with-border">
+            <div class="row text-icon-carousel slick-initialized slick-slider">
+                <div aria-live="polite" class="slick-list draggable" tabindex="0">
+                    <div class="slick-track" style="opacity: 1; width: 100%; transform: translate3d(0px, 0px, 0px);">
+                        <div class="col-sm-6 col-md-4 col-lg-3 slick-slide slick-active  business-content" data-slick-index="0" aria-hidden="false">
+                            <div class="hover"></div>
+                            <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0.5s" style="animation-delay: 0.5s;">
+                                <div class="icon-wrapper">
+                                    <span><i class="icon icon-diag"></i><span class="icon-hover"></span></span>
+                                </div>
+                                <h4 class="h-lg text-center">Diagnosing Your Device</h4>
+                                <p class="text">We will diagnose your issues with a flexible price</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 slick-slide slick-active  business-content" data-slick-index="1" aria-hidden="false">
+                            <div class="hover"></div>
+                            <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0s" style="animation-delay: 0s;">
+                                <div class="icon-wrapper">
+                                    <span><i class="icon icon-hard-disk"></i><span class="icon-hover"></span></span>
+                                </div>
+                                <h4 class="h-lg text-center">Hardware &amp; Software Installation</h4>
+                                <p class="text">We can help you determine what hardware install or software installing solutions will best fit your needs. </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 slick-slide slick-active  business-content" data-slick-index="2" aria-hidden="false">
+                            <div class="hover"></div>
+                            <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0s" style="animation-delay: 0s;">
+                                <div class="icon-wrapper">
+                                    <span><i class="icon icon-repair"></i><span class="icon-hover"></span></span>
+                                </div>
+                                <h4 class="h-lg text-center">Professional Computer Repair</h4>
+                                <p class="h-lg text-center">We fix all sorts of computer issues! From software to hardware we have the solution!</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3 slick-slide slick-active  business-content" data-slick-index="3" aria-hidden="false">
+                            <div class="hover"></div>
+                            <div class="text-icon animation animated scaleOut" data-animation="scaleOut" data-animation-delay="0.5s" style="animation-delay: 0.5s;">
+                                <div class="icon-wrapper">
+                                    <span><i class="icon icon-viruses"></i><span class="icon-hover"></span></span>
+                                </div>
+                                <h4 class="h-lg text-center">Virus &amp; Spyware Removal</h4>
+                                <p class="text">We work through a remote super-secure connection, and give you a full report when our work is done.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- business section -->
+  
+    <!-- our team section -->
+    <div id="team" class="box box-primary ">
+        <div class="box-header">
+            <h2 class="box-title">Meet Our Team</h2>
+        </div>
+        <p class="info text-center">We are experts in repair and upgrading of Computers, Laptops, CCTV setup</p>
+        <div class="row person-carousel slick-initialized slick-slider">
+            <div aria-live="polite" class="slick-list draggable" tabindex="0">
+                <div class="slick-track" style="opacity: 1; width: 100%; transform: translate3d(0px, 0px, 0px);">
+                    <div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 slick-slide slick-active" data-slick-index="0" aria-hidden="false">
+                        <div class="person animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0.5s" style="animation-delay: 0.5s;">
+                            <div class="image">
+                                <img src="https://graph.facebook.com/100002191228306/picture?type=large" alt="" class="img-responsive">
+                                @*<div class="hover"></div>*@
+                            </div>
+                            <h4 class="name">
+                                Bolade Sreenivas
+                            </h4>
+                            <h6 class="position">Owner, Computer/Laptop/Printer repair specialist </h6>
+                            <div class="link">
+                                <a class="icon icon-facebook" href="https://www.facebook.com/bolade.sreenivas"></a>
+                                <a class="icon icon-twitter" href="#"></a>
+                                <a class="icon icon-google-plus" href="#"></a>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 slick-slide slick-active" data-slick-index="1" aria-hidden="false">
+                        <div class="person animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                            <div class="image">
+                                <img src="https://graph.facebook.com/100003263562160/picture?type=large" alt="" class="img-responsive">
+                                @*<div class="hover"></div>*@
+                            </div>
+                            <h4 class="name">Jagadeesh Varma</h4>
+                            <h6 class="position">Computer/Printer repairs, CCTV device setup</h6>
+                            <div class="link">
+                                <a class="icon icon-facebook" href="https://www.facebook.com/jagadeesh.varma.5"></a>
+                                <a class="icon icon-twitter" href="#"></a>
+                                <a class="icon icon-google-plus" href="#"></a>
+                            </div>
+                        </div>
+                    </div><div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 slick-slide slick-active" data-slick-index="2" aria-hidden="false">
+                        <div class="person animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                            <div class="image">
+                                <img src="https://graph.facebook.com/100001505538145/picture?type=large" alt="" class="img-responsive">
+                                @*<div class="hover"></div>*@
+                            </div>
+                            <h4 class="name">Shiva Kumar</h4>
+                            <h6 class="position">Computer repairs, IT support</h6>
+                            <div class="link">
+                                <a class="icon icon-facebook" href="https://www.facebook.com/shivakumakmr"></a>
+                                <a class="icon icon-twitter" href="#"></a>
+                                <a class="icon icon-google-plus" href="#"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- our team section -->
+   
+    <!-- why choose us section-->
+    <div class="box box-primary " id="chooseus">
+            <div class="box-header">
+                <h2 class="box-title">Why Choose Us</h2>
+
+            </div>
+            <div class="box-body with-border">
+                <div class="">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-icon-squared  animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                        <div class="hover"></div>
+                        <div class="caption">
+                            <div class="icon-big"><span class="icon icon-manager"></span></div>
+                            <h5 class="title" style="height: 28px;">Experienced Professionals</h5>
+                            <div class="text" style="height: 48px;">We pride ourselves on being a professional computer repair facility</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-icon-squared  animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                        <div class="hover"></div>
+                        <div class="caption">
+                            <div class="icon-big"><span class="icon icon-technology"></span></div>
+                            <h5 class="title" style="height: 28px;">Expert Technical Skills</h5>
+                            <div class="text" style="height: 48px;">Our technical experts will get you honest, reliable and professional help </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-icon-squared animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                        <div class="hover"></div>
+                        <div class="caption">
+                            <div class="icon-big"><span class="icon icon-hand-shake"></span></div>
+                            <h5 class="title" style="height: 28px;">Friendly Service</h5>
+                            <div class="text" style="height: 48px;">Most of the services below are repaired within hours, and in most cases same day!</div>
+                        </div>
+                    </div>
+                    <div class="text-icon-squared col-lg-3 col-md-3 col-sm-6 col-xs-12 animation animated fadeInUp" data-animation="fadeInUp" data-animation-delay="0s" style="animation-delay: 0s;">
+                        <div class="hover"></div>
+                        <div class="caption">
+                            <div class="icon-big"><span class="icon icon-signs"></span></div>
+                            <h5 class="title" style="height: 28px;">Excellent Reputation</h5>
+                            <div class="text" style="height: 48px;">We have built our reputation on the attention to details and our loyal service to our customers</div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+            <!-- /.box-body -->
+
+        </div>
+     <!-- why choose us section -->
+    
+    <!--contact us section-->
+    @Html.Partial("_ClientsPartialPage")
+    <!-- contact us section -->
+
+
+</div>

@@ -1,0 +1,86 @@
+﻿<script>
+    $(document).ready(function () {
+        $("#ulMenu li").removeClass("active");
+        $("#liContactUs").addClass("active");
+
+        $("#txtEmail").blur(function () {
+            var txt = $("#txtEmail").val().trim();
+            if (txt!="" && !validateEmail(txt)) {
+                showWarningStatus("Please enter a valid Email Id");
+                $("#txtEmail").addClass("txt-error");
+            }
+        })
+        $("#btnSubmit").click(function () {
+            if(checkIfDivFieldEmpty("divContactSubmit")){
+                showWarningStatus("Please enter details correctly");
+            }
+            else if (!validateEmail($("#txtEmail").val().trim())) {
+                showWarningStatus("Please enter a valid Email Id");
+                $("#txtEmail").addClass("txt-error");
+            }
+            else {
+                name = $("#txtName").val().trim();
+                phone = $("#txtPhone").val().trim();
+                email = $("#txtEmail").val().trim();
+                msg = $("#txtMsg").val().trim();
+                showStatus("Please wait...")
+                $.ajax({
+                    dataType: "json",
+                    type: "post",
+                    data:{
+                        name:name,
+                        phone:phone,
+                        email:email,
+                        msg:msg
+                    },
+                    url: '@Url.Action("SendAnEmailToUs","Home")'
+                }).success(function (data) {
+                    hideStatus();
+                    $("#divModal").modal("show");
+                    $(".mandatory-field").val("").removeClass("txt-error");
+                    $("#txtMsg").text("");
+                }).error(function () {
+
+                });
+            }
+        })
+    })
+</script>
+<div id="contactform" class="contact-form contact-box box box-primary">
+    <div class="box-header">
+        <h2 class="box-title">Contact Us</h2>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-6">
+                <div class="input-wrapper">
+                    <label>Name <span class="required">*</span></label>
+                    <input id="txtName" type="text" class="form-control mandatory-field" name="name" placeholder="Your name" maxlength="20">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-wrapper">
+                    <label>Phone<span class="required">*</span></label>
+                    <input id="txtPhone" type="text" class="form-control mandatory-field" name="phone" placeholder="+91 XXXXXXXXXX" maxlength="14">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <label>Email<span class="required">*</span></label>
+                <input id="txtEmail" type="text" class="form-control mandatory-field" name="email" placeholder="XXXX@XXXX.XXX">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Message<span class="required">*</span></label>
+                <textarea id="txtMsg" class="textarea-custom form-control mandatory-field" name="message"></textarea>
+            </div>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <button type="button" id="btnSubmit" class="btn btn-info btn-sm btn-xs"><span>Send Message</span></button>
+
+</div>

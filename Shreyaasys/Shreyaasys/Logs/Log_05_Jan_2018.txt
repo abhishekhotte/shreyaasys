@@ -1,0 +1,33 @@
+-----------------------------------
+Date Time: 05-Jan-2018 11:20:09 PM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59
+-----------------------------------
+Date Time: 05-Jan-2018 11:30:30 PM
+Message: Server does not support secure connections.
+Exception:    at System.Net.Mail.SmtpConnection.GetConnection(ServicePoint servicePoint)
+   at System.Net.Mail.SmtpTransport.GetConnection(ServicePoint servicePoint)
+   at System.Net.Mail.SmtpClient.GetConnection()
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59
+-----------------------------------
+Date Time: 05-Jan-2018 11:32:47 PM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59
+-----------------------------------
+Date Time: 05-Jan-2018 11:40:18 PM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59
+-----------------------------------
+Date Time: 05-Jan-2018 11:44:31 PM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 67
+-----------------------------------
+Date Time: 05-Jan-2018 11:46:08 PM
+Message: Failure sending mail.
+Exception:    at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at Shreyaasys.Controllers.HomeController.SendAnEmailToUs(String name, String phone, String email, String msg) in D:\FL\Shreyaasys\Shreyaasys\Controllers\HomeController.cs:line 59

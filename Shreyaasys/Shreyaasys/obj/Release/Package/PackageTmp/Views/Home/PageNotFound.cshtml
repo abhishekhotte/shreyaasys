@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "pagenotfound";
+}
+<script>
+    $(document).ready(function () {
+        $('html, body').animate({
+            scrollTop: $("#pagenotfound").offset().top - 120
+        }, 550);
+    })
+</script>
+
+<!-- gallery section -->
+<div class="padding-50">
+    <div class="box box-primary" id="pagenotfound">
+        <div class="box-header">
+            <div class="pull-left">
+                <h2 class="box-title"><i class="fa fa-warning"></i>&nbsp; Page not found</h2>
+            </div>
+        </div>
+        <div class="box-body with-border">
+            <div class="tz-gallery">
+                <div class="row">
+                    We are sorry, we couldn't find the page that you were looking for access.
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <a href="~/home" class="btn btn-info btn-sm btn-xs">Home</a>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- unauthorizedaccess section -->
+</div>
